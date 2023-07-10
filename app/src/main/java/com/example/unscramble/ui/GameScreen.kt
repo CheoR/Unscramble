@@ -43,7 +43,17 @@ import com.example.unscramble.R
 import com.example.unscramble.ui.theme.UnscrambleTheme
 
 @Composable
-fun GameScreen() {
+fun GameScreen(
+    gameViewModel: GameViewModel = viewModel()
+) {
+    /*
+     * collectAsState()
+     *  - collects values from this StateFlow
+     *  - represents its latest value via State
+     *  - StateFlow.value used as an initial value
+     *  - Every time new value posted into StateFlow, returned State updates, causing recomposition of every State.value usage.
+     */
+    val gameUiState by gameViewModel.uiState.collectAsState()
     val mediumPadding = dimensionResource(R.dimen.padding_medium)
 
     Column(
@@ -60,6 +70,7 @@ fun GameScreen() {
         )
 
         GameLayout(
+            currentScrambledWord = gameUiState.currentScrambledWord,
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
@@ -112,7 +123,10 @@ fun GameStatus(score: Int, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun GameLayout(modifier: Modifier = Modifier) {
+fun GameLayout(
+    currentScrambledWord: String,
+    modifier: Modifier = Modifier
+) {
     val mediumPadding = dimensionResource(R.dimen.padding_medium)
 
     Card(
@@ -135,8 +149,9 @@ fun GameLayout(modifier: Modifier = Modifier) {
                 color = colorScheme.onPrimary
             )
             Text(
-                text = "scrambleun",
-                style = typography.displayMedium
+                text = currentScrambledWord,
+                fontSize = 45.sp,
+                modifier = modifier.align(Alignment.CenterHorizontally)
             )
             Text(
                 text = stringResource(R.string.instructions),
