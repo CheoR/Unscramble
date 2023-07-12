@@ -10,6 +10,11 @@ import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
+/*
+    Test methods are executed in isolation to avoid unexpected side effects from mutable test
+     instance state. By default, before each test method is executed, JUnit creates a new instance
+      of the test class.
+ */
 class GameViewModelTest {
     private val viewModel = GameViewModel()
 
