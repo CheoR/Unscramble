@@ -15,7 +15,6 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.shapes
 import androidx.compose.material3.MaterialTheme.typography
@@ -70,12 +69,12 @@ fun GameScreen(
         )
 
         GameLayout(
-            currentScrambledWord = gameUiState.currentScrambledWord,
-            userGuess = gameViewModel.userGuess,
             onUserGuessChanged = { gameViewModel.updateUserGuess(it) },
-            onKeyboardDone = { gameViewModel.checkUserGuess() },
-            isGuessWrong = gameUiState.isGuessedWordWrong,
             wordCount = gameUiState.currentWordCount,
+            userGuess = gameViewModel.userGuess,
+            onKeyboardDone = { gameViewModel.checkUserGuess() },
+            currentScrambledWord = gameUiState.currentScrambledWord,
+            isGuessWrong = gameUiState.isGuessedWordWrong,
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
@@ -91,9 +90,7 @@ fun GameScreen(
 
             Button(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
-                    .padding(start = 8.dp),
+                    .fillMaxWidth(),
                 onClick = { gameViewModel.checkUserGuess() }
             ) {
                 Text(
@@ -115,14 +112,16 @@ fun GameScreen(
 
         GameStatus(
             score = gameUiState.score,
-            modifier = Modifier.padding(20.dp),
+            modifier = Modifier
+                .padding(20.dp)
         )
-    }
-    if (gameUiState.isGameOver) {
-        FinalScoreDialog(
-            score = gameUiState.score,
-            onPlayAgain = { gameViewModel.resetGame() }
-        )
+
+        if (gameUiState.isGameOver) {
+            FinalScoreDialog(
+                score = gameUiState.score,
+                onPlayAgain = { gameViewModel.resetGame() }
+            )
+        }
     }
 }
 
